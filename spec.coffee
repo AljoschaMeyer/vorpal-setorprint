@@ -101,6 +101,36 @@ describe 'A commands added with a val method', ->
     vorpal.exec "#{key} baz", (err, data) ->
       expect(obj[key]).toBe oldValue
 
+describe 'A commands added with a print method', ->
+  printcalls = null
+  print = (arg) ->
+    printcalls++
+
+  beforeEach ->
+    initVorpal()
+    key = 'foo'
+    sop.addCommand obj, key, null, print
+    cmd = vorpal.find key
+    printcalls = 0
+
+  it 'calls print with obj.key if called without argument, instead of options.print', ->
+    spyOn sop.options, 'print'
+    vorpal.exec "#{key}", (err, data) ->
+      expect(sop.options.print.calls.length).toBe 0
+      expect(printcalls).toBe 1
+
+describe 'A command added with a description', ->
+  forcedDescription = 'a-öfmwaäipfgjaäw'
+
+  beforeEach ->
+    initVorpal()
+    key = 'foo'
+    sop.addCommand obj, key, null, null, forcedDescription
+    cmd = vorpal.find key
+
+  it 'sets the description to the given one instead of options.describe(key)', ->
+    expect(cmd.description()).toBe forcedDescription
+
 describe 'The default describe method', ->
   beforeEach ->
     initVorpal()

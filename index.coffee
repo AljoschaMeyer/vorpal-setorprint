@@ -13,9 +13,9 @@ module.exports = (vorpal, options) ->
       print: defaultPrint
       describe: defaultDescribe
     }
-    addCommand: (obj, key, val) ->
+    addCommand: (obj, key, val, print, description) ->
       vorpal.command "#{key} [#{key}]"
-        .description defaultDescribe key
+        .description description ? defaultDescribe key
         .action (args, cb) ->
           if args[key]?
             if val?
@@ -24,7 +24,10 @@ module.exports = (vorpal, options) ->
               value = args[key]
             obj[key] = value unless value is null
           else
-            sop.options.print obj[key]
+            if print?
+              print obj[key]
+            else
+              sop.options.print obj[key]
           cb()
 
   vorpal.sop = sop
