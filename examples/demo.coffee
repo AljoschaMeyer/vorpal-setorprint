@@ -14,7 +14,7 @@ values =
   greeting: 'Hello'
   name: 'Franz Foobert'
 
-sop.command values, 'greeting'
+sop.command 'greeting', values
 
 validateName = (arg) ->
   if arg.match(/\d/) is null
@@ -24,10 +24,15 @@ validateName = (arg) ->
     logger.error 'Real names don\'t contain digits! Chose another one.'
     return null
 
-print = (arg) ->
+printName = (arg) ->
   logger.info "Your name seems to be #{arg}, am I right?"
 
-sop.command values, 'name', validateName, print, 'Not only has this command a cusomized description, no, it also sets or prints the name'
+nameOptions =
+  validate: validateName
+  print: printName
+  description: 'Not only has this command a cusomized description, no, it also sets or prints the name'
+
+sop.command 'name', values, nameOptions
 
 vorpal.command 'greet'
   .description 'a complex command to greet the user'

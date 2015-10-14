@@ -10,19 +10,19 @@ module.exports = (vorpal, options) ->
 
   sop =
     options: options ? {}
-    command: (obj, key, val, print, description) ->
+    command: (key, obj, options = {}) ->
       vorpal.command "#{key} [#{key}]"
-        .description description ? defaultDescribe key
+        .description options.description ? sop.options.describe key
         .action (args, cb) ->
           if args[key]?
-            if val?
-              value = val args[key]
+            if options.validate?
+              value = options.validate args[key]
             else
               value = args[key]
             obj[key] = value unless value is null
           else
-            if print?
-              print obj[key]
+            if options.print?
+              options.print obj[key]
             else
               sop.options.print obj[key]
           cb()

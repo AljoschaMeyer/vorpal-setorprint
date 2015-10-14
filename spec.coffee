@@ -11,6 +11,7 @@ sop = null
 obj = null
 key = null
 cmd = null
+cmdOptions = null
 
 initVorpal = ->
   vorpal = null
@@ -22,10 +23,26 @@ initVorpal = ->
 
 addExampleCommand = ->
   key = 'foo'
-  sop.command obj, key
+  sop.command key, obj
   cmd = vorpal.find key
 
-describe 'The vorpal-log extension', ->
+addCommandWithOptions = ->
+  key = 'foo'
+
+  cmdOptions =
+    validate: (arg) ->
+      if arg is 'baz'
+        return null
+      else
+        return 'qux'
+    print: (arg) ->
+      return true
+    description: 'a-öfmwaäipfgjaäw'
+
+  sop.command key, obj, cmdOptions
+  cmd = vorpal.find key
+
+describe 'The vorpal-sop extension', ->
   beforeEach ->
     vorpal = null
     sop = null
@@ -55,7 +72,7 @@ describe 'The command function', ->
   it 'adds a command called [key] to vorpal', ->
     key = 'foo'
     expect(vorpal.find key).toBeUndefined()
-    sop.command obj, key
+    sop.command key, obj
     expect(vorpal.find key).not.toBeUndefined()
 
 describe 'An added command', ->
@@ -64,9 +81,12 @@ describe 'An added command', ->
     addExampleCommand()
 
   it 'has a description based on sop.options.describe', ->
+    spyOn(sop.options, 'describe').andCallThrough()
     expect(cmd.description()).toBe sop.options.describe key
+    expect(sop.options.describe.calls.length).toBe 1
+    expect(sop.options.describe.calls[0].args[0]).toBe key
 
-  it 'calls sop.options.print with obj.key if called without argument', ->
+  it 'calls sop.options.print with obj[key] if called without argument', ->
     spyOn sop.options, 'print'
     vorpal.exec "#{key}", (err, data) ->
       expect(sop.options.print.calls.length).toBe 1
@@ -77,59 +97,45 @@ describe 'An added command', ->
     vorpal.exec "#{key} #{newValue}", (err, data) ->
       expect(obj[key]).toBe newValue
 
+  #TODO calls callback for passing validation
 describe 'A commands added with a val method', ->
-  val = (arg) ->
-    if arg is 'baz'
-      return null
-    else
-      return 'qux'
-
   beforeEach ->
     initVorpal()
-    key = 'foo'
-    sop.command obj, key, val
-    cmd = vorpal.find key
+    addCommandWithOptions()
 
-  it 'sets obj.key to the result of val(args[key])', ->
+  it 'sets obj[key] to the result of val(args[key])', ->
     arg = 'öjföwifjäwf'
     vorpal.exec "#{key} #{arg}", (err, data) ->
-      expect(obj[key]).toBe val(arg)
+      expect(obj[key]).toBe cmdOptions.validate(arg)
 
   it 'lets obj.key remain unchanged if val(args[key] is null)', ->
-    expect(val 'baz').toBeNull()
+    expect(cmdOptions.validate 'baz').toBeNull()
     oldValue = obj[key]
     vorpal.exec "#{key} baz", (err, data) ->
       expect(obj[key]).toBe oldValue
 
-describe 'A commands added with a print method', ->
-  printcalls = null
-  print = (arg) ->
-    printcalls++
+  # TODO calls callbacks for failing or passing validation
 
+describe 'A commands added with a print method', ->
   beforeEach ->
     initVorpal()
-    key = 'foo'
-    sop.command obj, key, null, print
-    cmd = vorpal.find key
-    printcalls = 0
+    addCommandWithOptions()
 
-  it 'calls print with obj.key if called without argument, instead of options.print', ->
+  it 'calls this print method with obj[key] if called without argument, instead of the global default print', ->
     spyOn sop.options, 'print'
+    spyOn cmdOptions, 'print'
     vorpal.exec "#{key}", (err, data) ->
       expect(sop.options.print.calls.length).toBe 0
-      expect(printcalls).toBe 1
+      expect(cmdOptions.print.calls.length).toBe 1
+      expect(cmdOptions.print.calls[0].args[0]).toBe obj[key]
 
 describe 'A command added with a description', ->
-  forcedDescription = 'a-öfmwaäipfgjaäw'
-
   beforeEach ->
     initVorpal()
-    key = 'foo'
-    sop.command obj, key, null, null, forcedDescription
-    cmd = vorpal.find key
+    addCommandWithOptions()
 
   it 'sets the description to the given one instead of options.describe(key)', ->
-    expect(cmd.description()).toBe forcedDescription
+    expect(cmd.description()).toBe cmdOptions.description
 
 describe 'The default describe method', ->
   beforeEach ->
@@ -172,3 +178,7 @@ describe 'The default print method', ->
     sop.options.print msg
     expect(vorpal.logger.info.calls.length).toBe 1
     expect(vorpal.logger.info.calls[0].args[0]).toBe msg
+
+# TODO default failedValidation
+
+# TODO default passedValidation
