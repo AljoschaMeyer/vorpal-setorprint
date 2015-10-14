@@ -18,19 +18,25 @@ sop.command 'greeting', values
 
 validateName = (arg) ->
   if arg.match(/\d/) is null
-    logger.confirm 'What a splendid name!'
     return arg
   else
-    logger.error 'Real names don\'t contain digits! Chose another one.'
     return null
 
 printName = (arg) ->
   logger.info "Your name seems to be #{arg}, am I right?"
 
+failedValidationName = (key, arg) ->
+  logger.error "A real #{key} doesn\'t contain digits! I bet #{arg} isn\'t even your real name."
+
+passedValidationName = (key, arg, value) ->
+  logger.confirm "#{value}? Well, that\'s a splendid #{key}."
+
 nameOptions =
   validate: validateName
   print: printName
-  description: 'Not only has this command a cusomized description, no, it also sets or prints the name'
+  description: 'ot only has this command a customized description, no, it also sets or prints the name'
+  failedValidation: failedValidationName
+  passedValidation: passedValidationName
 
 sop.command 'name', values, nameOptions
 
