@@ -27,10 +27,19 @@ const options = {foo: 'bar'};
 sop.addCommand(options, 'foo');
 ```
 
-```bash
+```
 $ node ./myapp.js
 vorpal-setorprint demo $ help foo
-TODO include help output
+
+Usage: foo [options] [foo]
+
+
+set or print foo
+
+Options:
+
+  --help  output usage information
+
 vorpal-setorprint demo $ foo
 bar
 vorpal-setorprint demo $ foo qux
