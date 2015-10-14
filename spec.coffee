@@ -22,7 +22,7 @@ initVorpal = ->
 
 addExampleCommand = ->
   key = 'foo'
-  sop.addCommand obj, key
+  sop.command obj, key
   cmd = vorpal.find key
 
 describe 'The vorpal-log extension', ->
@@ -44,18 +44,18 @@ describe 'The vorpal-log extension', ->
     vorpal.use vorpalSOP, options
     expect(vorpal.sop.options).toBe options
 
-describe 'The addCommand function', ->
+describe 'The command function', ->
   beforeEach ->
     initVorpal()
 
   it 'is exposed by the sop object', ->
-    expect(sop.addCommand).toBeDefined()
-    expect(typeof sop.addCommand).toBe 'function'
+    expect(sop.command).toBeDefined()
+    expect(typeof sop.command).toBe 'function'
 
   it 'adds a command called [key] to vorpal', ->
     key = 'foo'
     expect(vorpal.find key).toBeUndefined()
-    sop.addCommand obj, key
+    sop.command obj, key
     expect(vorpal.find key).not.toBeUndefined()
 
 describe 'An added command', ->
@@ -87,7 +87,7 @@ describe 'A commands added with a val method', ->
   beforeEach ->
     initVorpal()
     key = 'foo'
-    sop.addCommand obj, key, val
+    sop.command obj, key, val
     cmd = vorpal.find key
 
   it 'sets obj.key to the result of val(args[key])', ->
@@ -109,7 +109,7 @@ describe 'A commands added with a print method', ->
   beforeEach ->
     initVorpal()
     key = 'foo'
-    sop.addCommand obj, key, null, print
+    sop.command obj, key, null, print
     cmd = vorpal.find key
     printcalls = 0
 
@@ -125,7 +125,7 @@ describe 'A command added with a description', ->
   beforeEach ->
     initVorpal()
     key = 'foo'
-    sop.addCommand obj, key, null, null, forcedDescription
+    sop.command obj, key, null, null, forcedDescription
     cmd = vorpal.find key
 
   it 'sets the description to the given one instead of options.describe(key)', ->

@@ -24,7 +24,7 @@ vorpal.use(vorpalSOP)
 const sop = vorpal.sop;
 const options = {foo: 'bar'};
 
-sop.addCommand(options, 'foo');
+sop.command(options, 'foo');
 ```
 
 ```
@@ -50,9 +50,9 @@ vorpal-setorprint demo $
 
 ### Usage
 
-Adds a `sop` object to vorpal, which stores `options` and provides a `addCommand` function.
+Adds a `sop` object to vorpal, which stores `options` and provides a `command` function.
 
-`addCommand(obj, key [, val, print, description])`: Adds a command to vorpal which either sets or prints a specific value.
+`command(obj, key [, val, print, description])`: Adds a command to vorpal which either sets or prints a specific value.
 
 - `obj`, `key`: When the added command is called without arguments, obj[key] is printed to the user. When the command is called with an argument, obj[key] is set to this argument. `key` is also the name of the added command.
 - `val`: an optional function to validate and parse the input. Receives args[key] and should return either the value for obj[key], or null, in which case obj[key] remains unchanged. You'll probably want to do some logging in this method to tell the user if validation failed.

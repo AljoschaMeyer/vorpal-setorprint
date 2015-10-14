@@ -9,11 +9,8 @@ module.exports = (vorpal, options) ->
     return "set or print #{key}"
 
   sop =
-    options: options ? {
-      print: defaultPrint
-      describe: defaultDescribe
-    }
-    addCommand: (obj, key, val, print, description) ->
+    options: options ? {}
+    command: (obj, key, val, print, description) ->
       vorpal.command "#{key} [#{key}]"
         .description description ? defaultDescribe key
         .action (args, cb) ->
@@ -29,5 +26,8 @@ module.exports = (vorpal, options) ->
             else
               sop.options.print obj[key]
           cb()
+
+  sop.options.print = defaultPrint unless sop.options.print?
+  sop.options.describe = defaultDescribe unless sop.options.describe?
 
   vorpal.sop = sop

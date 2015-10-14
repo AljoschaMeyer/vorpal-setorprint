@@ -14,7 +14,7 @@ values =
   greeting: 'Hello'
   name: 'Franz Foobert'
 
-sop.addCommand values, 'greeting'
+sop.command values, 'greeting'
 
 validateName = (arg) ->
   if arg.match(/\d/) is null
@@ -27,7 +27,7 @@ validateName = (arg) ->
 print = (arg) ->
   logger.info "Your name seems to be #{arg}, am I right?"
 
-sop.addCommand values, 'name', validateName, print, 'Not only has this command a cusomized description, no, it also sets or prints the name'
+sop.command values, 'name', validateName, print, 'Not only has this command a cusomized description, no, it also sets or prints the name'
 
 vorpal.command 'greet'
   .description 'a complex command to greet the user'
