@@ -68,10 +68,14 @@ describe 'An added command', ->
 
   it 'calls sop.options.print with obj.key if called without argument', ->
     spyOn sop.options, 'print'
-    newValue = 'wfljwlajkfbl'
-    vorpal.exec "#{key} #{newValue}", (err, data) ->
+    vorpal.exec "#{key}", (err, data) ->
       expect(sop.options.print.calls.length).toBe 1
-      expect(sop.options.print.calls[0].args[0]).toBe newValue
+      expect(sop.options.print.calls[0].args[0]).toBe obj[key]
+
+  it 'sets obj.key to the argument if called with one', ->
+    newValue = 'flkewjfö'
+    vorpal.exec "#{key} #{newValue}", (err, data) ->
+      expect(obj[key]).toBe newValue
 
 describe 'The default describe method', ->
   beforeEach ->
