@@ -64,7 +64,7 @@ describe 'An added command', ->
     addExampleCommand()
 
   it 'has a description based on sop.options.describe', ->
-    expect(vorpal.find(key).description()).toBe sop.options.describe key
+    expect(cmd.description()).toBe sop.options.describe key
 
   it 'calls sop.options.print with obj.key if called without argument', ->
     spyOn sop.options, 'print'
@@ -76,6 +76,30 @@ describe 'An added command', ->
     newValue = 'flkewjfö'
     vorpal.exec "#{key} #{newValue}", (err, data) ->
       expect(obj[key]).toBe newValue
+
+describe 'A commands added with a val method', ->
+  val = (arg) ->
+    if arg is 'baz'
+      return null
+    else
+      return 'qux'
+
+  beforeEach ->
+    initVorpal()
+    key = 'foo'
+    sop.addCommand obj, key, val
+    cmd = vorpal.find key
+
+  it 'sets obj.key to the result of val(args[key])', ->
+    arg = 'öjföwifjäwf'
+    vorpal.exec "#{key} #{arg}", (err, data) ->
+      expect(obj[key]).toBe val(arg)
+
+  it 'lets obj.key remain unchanged if val(args[key] is null)', ->
+    expect(val 'baz').toBeNull()
+    oldValue = obj[key]
+    vorpal.exec "#{key} baz", (err, data) ->
+      expect(obj[key]).toBe oldValue
 
 describe 'The default describe method', ->
   beforeEach ->
