@@ -24,7 +24,7 @@ module.exports = (vorpal, options) ->
     options: options ? {}
     command: (key, obj, options = {}) ->
       return vorpal.command "#{key} [#{key}]"
-        .description options.description ? sop.options.describe key
+        .description sop.options.describe key
         .action (args, cb) ->
           if args[key]?
             if options.validate?

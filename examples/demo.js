@@ -44,12 +44,11 @@
   nameOptions = {
     validate: validateName,
     print: printName,
-    description: 'prints or sets the name, with a custom description',
     failedValidation: failedValidationName,
     passedValidation: passedValidationName
   };
 
-  sop.command('name', values, nameOptions);
+  sop.command('name', values, nameOptions).description('prints or sets the name, with a custom description');
 
   vorpal.command('greet').description('a complex command to greet the user').action(function(args, cb) {
     logger.log(values.greeting + ", " + values.name + ".");

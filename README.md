@@ -64,7 +64,6 @@ sop.command(key, obj)
 - `options`: The following values of the option object are used:
   - `validate`: an optional function to validate and parse the input. Receives `args[key]` and should return either the value for `obj[key]`, or null, in which case `obj[key]` remains unchanged.
   - `print`: The function to be called when the added command is run without arguments. Defaults to `sop.options.print`.
-  - `description`: The description string used in the help command. Defaults to `sop.options.describe(key)`.
   - `failedValidation`: A function which is called when `validate` returns null. Defaults to `sop.options.failedValidation`.
   - `passedValidation`: A function which is called when `validate` does not return null. Defaults to `sop.options.passedValidation`.
 
@@ -75,6 +74,6 @@ See [the example](https://github.com/AljoschaMeyer/vorpal-log/tree/master/exampl
 The following options passed by `vorpal.use(vorpalSOP, options)` are used:
 
 - `print`: a function to be called with the value to print if no argument was given a sop-command. The default function tries to use [vorpal-log](https://github.com/AljoschaMeyer/vorpal-log)'s `logger.info(arg)` and falls back to `vorpal.session.log(arg)`.
-- `describe`: a function to be called with the key of each added command. The return value is used as the description for the help entry. Defaults to `return "set or print #{key}"`. This value can simply be override by calling vorpal's `description` method on the command returned by `sop.command`.
+- `describe`: a function to be called with the key of each added command. The return value is used as the description for the help entry. Defaults to `return "set or print #{key}"`. This value can simply be overridden by calling vorpal's `description` method on the command object returned by `sop.command`.
 - `failedValidation`: a function to be called with `key`, `arg` when an input fails to pass validation. `arg` is the argument as parsed by vorpal. By default, this prints `"#{arg} is an invalid value for #{key}"`.
 - `passedValidation`: a function to be called with `key`, `arg` and `value` when an input passes validation. `arg` is the argument as parsed by vorpal, `value` is what the `validate` function returned. By default, this prints `"set #{key} to #{arg}"`.

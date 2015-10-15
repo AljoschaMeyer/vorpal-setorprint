@@ -40,7 +40,6 @@ addCommandWithOptions = ->
         return customValidationResult
     print: (arg) ->
       return true
-    description: 'a-öfmwaäipfgjaäw'
     passedValidation: (key, arg, value) ->
       return true
     failedValidation: (key, arg) ->
@@ -195,14 +194,6 @@ describe 'A command added with a print method', ->
       expect(sop.options.print.calls.length).toBe 0
       expect(cmdOptions.print.calls.length).toBe 1
       expect(cmdOptions.print.calls[0].args[0]).toBe obj[key]
-
-describe 'A command added with a description', ->
-  beforeEach ->
-    initVorpal()
-    addCommandWithOptions()
-
-  it 'sets the description to the given one instead of options.describe(key)', ->
-    expect(cmd.description()).toBe cmdOptions.description
 
 describe 'The default describe method', ->
   beforeEach ->
