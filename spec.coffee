@@ -2,6 +2,7 @@ vorpalSOP = require './index'
 
 Vorpal = require 'vorpal'
 vorpalLog = require 'vorpal-log'
+Command = require 'vorpal/lib/command'
 
 # Needed because too many vorpal emmiters are added otherwise
 require('events').EventEmitter.defaultMaxListeners = Infinity
@@ -80,6 +81,9 @@ describe 'The command function', ->
     expect(vorpal.find key).toBeUndefined()
     sop.command key, obj
     expect(vorpal.find key).not.toBeUndefined()
+
+  it 'returns the added command', ->
+    expect(sop.command(key, obj) instanceof Command).toBe true
 
 describe 'An added command', ->
   beforeEach ->

@@ -52,7 +52,13 @@ vorpal-setorprint demo $
 
 Adds a `sop` object to vorpal, which stores `options` and provides a `command` function.
 
-`command(key, obj[, options])`: Adds a command to vorpal which either sets or prints a specific value.
+`command(key, obj[, options])`: Adds a command to vorpal which either sets or prints a specific value. Returns the `command` object, just like `vorpal.command` does. This allows convenient chaining, e.g.
+
+```js
+sop.command(key, obj)
+  .alias('foobar')
+  .description('I like trains.');
+```
 
 - `obj`, `key`: When the added command is called without arguments, `obj[key]` is printed to the user. When the command is called with an argument, `obj[key]` is set to this argument. `key` is also the name of the added command.
 - `options`: The following values of the option object are used:

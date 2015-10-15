@@ -15,6 +15,7 @@ values =
   name: 'Franz Foobert'
 
 sop.command 'greeting', values
+  .alias 'foobar'
 
 validateName = (arg) ->
   if arg.match(/\d/) is null
@@ -34,7 +35,7 @@ passedValidationName = (key, arg, value) ->
 nameOptions =
   validate: validateName
   print: printName
-  description: 'ot only has this command a customized description, no, it also sets or prints the name'
+  description: 'prints or sets the name, with a custom description'
   failedValidation: failedValidationName
   passedValidation: passedValidationName
 
