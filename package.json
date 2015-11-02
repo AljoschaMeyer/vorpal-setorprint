@@ -1,6 +1,6 @@
 {
   "name": "vorpal-setorprint",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Quickly create vorpal commands which set a value, or print it if no argument was given.",
   "main": "index.js",
   "scripts": {
