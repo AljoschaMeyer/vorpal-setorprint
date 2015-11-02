@@ -23,7 +23,7 @@
   "homepage": "https://github.com/AljoschaMeyer/vorpal-setorprint#readme",
   "devDependencies": {
     "jasmine-node": "^1.14.5",
-    "vorpal": "^1.3.9",
+    "vorpal": "^1.3.34",
     "vorpal-log": "0.0.3"
   }
 }

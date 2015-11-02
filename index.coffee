@@ -3,7 +3,10 @@ module.exports = (vorpal, options) ->
     if vorpal.logger?
       vorpal.logger.info arg
     else
-      vorpal.session.log arg
+      if vorpal.activeCommand?
+        vorpal.activeCommand.log arg
+      else
+        vorpal.log arg
 
   defaultDescribe = (key) ->
     return "set or print #{key}"

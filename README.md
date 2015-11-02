@@ -73,7 +73,7 @@ See [the example](https://github.com/AljoschaMeyer/vorpal-log/tree/master/exampl
 
 The following options passed by `vorpal.use(vorpalSOP, options)` are used:
 
-- `print`: a function to be called with the value to print if no argument was given a sop-command. The default function tries to use [vorpal-log](https://github.com/AljoschaMeyer/vorpal-log)'s `logger.info(arg)` and falls back to `vorpal.session.log(arg)`.
+- `print`: a function to be called with the value to print if no argument was given a sop-command. The default function tries to use [vorpal-log](https://github.com/AljoschaMeyer/vorpal-log)'s `logger.info(arg)` and falls back to either `vorpal.activeCommand.log` or `vorpal.log`.
 - `describe`: a function to be called with the key of each added command. The return value is used as the description for the help entry. Defaults to `return "set or print #{key}"`. This value can simply be overridden by calling vorpal's `description` method on the command object returned by `sop.command`.
 - `failedValidation`: a function to be called with `key`, `arg` when an input fails to pass validation. `arg` is the argument as parsed by vorpal. By default, this prints `"#{arg} is an invalid value for #{key}"`.
 - `passedValidation`: a function to be called with `key`, `arg` and `value` when an input passes validation. `arg` is the argument as parsed by vorpal, `value` is what the `validate` function returned. By default, this prints `"set #{key} to #{arg}"`.
