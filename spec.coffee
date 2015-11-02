@@ -219,13 +219,13 @@ describe 'The default print method', ->
     expect(sop.options.print).toBeDefined()
     expect(typeof sop.options.print).toBe 'function'
 
-  it 'delegates to vorpal.instance.print without vorpal-log', ->
-    spyOn vorpal.session, 'log'
+  it 'delegates to vorpal.log outside of a command and without vorpal-log', ->
+    spyOn vorpal, 'log'
     # make sure the default behavior is used
     expect(vorpal.logger).toBeUndefined()
     sop.options.print msg
-    expect(vorpal.session.log.calls.length).toBe 1
-    expect(vorpal.session.log.calls[0].args[0]).toBe msg
+    expect(vorpal.log.calls.length).toBe 1
+    expect(vorpal.log.calls[0].args[0]).toBe msg
 
   it 'uses vorpal.logger methods if available', ->
     vorpal.use vorpalLog
